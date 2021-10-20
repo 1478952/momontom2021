@@ -1,13 +1,11 @@
 const clock = document.querySelector(".clock")
 
-
-function getClock(){
-    const date = new Date();
-    const hours = String(date.getHours()).padStart(2, "0");
-    const Minutes = String(date.getMinutes()). padStart(2, "0");
-    const Seconds = String(date.getSeconds()). padStart(2, "0");
-    clock.innerText = `${hours}:${Minutes}:${Seconds}`;
-    }
-
-getClock();
-setInterval(getClock, 1000);
+function getTime(){
+    const Time = new Date();
+    const Hour = String(Time.getHours()).padStart(2,"0");
+    const Minutes = String(Time.getMinutes()).padStart(2,"0");
+    const Seconds = String(Time.getSeconds()).padStart(2,"0");
+    clock.innerText = `${Hour}:${Minutes}:${Seconds}`
+}
+    getTime()
+   setInterval(getTime,1000)
