@@ -4,9 +4,7 @@ const toDoList = document.querySelector(".todo-list");
 
 const TODOS_KEY = "toDos";
 
-const toDos = [];
-
-
+let toDos = [];
 
 function saveTodos(){
     localStorage.setItem(TODOS_KEY, JSON.stringify(toDos));
@@ -15,12 +13,15 @@ function saveTodos(){
 function deleteTodo(event){
     const li = event.target.parentElement;
     li.remove();
+    toDos=toDos.filter((toDo)=>toDo.id!==parseInt(li.id));
+    saveTodos();
 }
 
 function paintTodo(newTodo){
     const li = document.createElement("li");
+    li.id=newTodo.id
     const span = document.createElement("span");
-    span.innerText = newTodo;
+    span.innerText = newTodo.text;
     const button = document.createElement("button");
     button.innerText = "❌";
     button.addEventListener("click", deleteTodo);
@@ -34,8 +35,12 @@ function ToDoSubmit (event){
     event.preventDefault(); 
     const newTodo = toDoInput.value;
     toDoInput.value = "";
-    toDos.push(newTodo);
-    paintTodo(newTodo);
+    const newTodoObj = {
+        text: newTodo,
+        id: Date.now()
+    }
+    toDos.push(newTodoObj);
+    paintTodo(newTodoObj);
     saveTodos();
 }
 
@@ -43,7 +48,8 @@ toDoForm.addEventListener("submit", ToDoSubmit);
 
 const savedTodos = localStorage.getItem(TODOS_KEY);
 
-if(saveTodos){
+if(savedTodos !== null){
     const parseTodos = JSON.parse(savedTodos);
-    parseTodos.forEach((item) => console.log("this is", item));
+    toDos = parseTodos;
+    parseTodos.forEach(paintTodo);
 }
